@@ -5,7 +5,6 @@ import java.util.List;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 
-import br.com.caelum.livraria.dao.AutorDao;
 import br.com.caelum.livraria.modelo.Autor;
 
 @Model
@@ -20,20 +19,27 @@ public class AutorBean {
 	// AutorDao como um EJB.O DAO está sendo administrado pelo EJB Container.
 	// Portanto, quem cria o DAO é o EJB Container e não a minha classe.
 
-	@Inject // precisamos pedir ao EJB Container passar aquela instancia que ele está
-			// administrando - invertendo o controle ou fazendo a injeção de dependencias
-	private AutorDao dao;
+	// @Inject // precisamos pedir ao EJB Container passar aquela instancia que ele
+	// está
+	// administrando - invertendo o controle ou fazendo a injeção de dependencias
+
+	// private AutorDao dao;//sera utilizado agora AutorService
+
+	@Inject
+	private AutorService service;// classe intermediaria entre bean e o dao. Inicializa o tx
 
 	public Autor getAutor() {
 		return autor;
 	}
 
 	public void cadastra() {
-		this.dao.salva(autor);
-		this.autor = new Autor();
+		// this.dao.salva(autor);
+		this.service.adiciona(autor);
+		this.autor = new Autor();// p/ limpeza do campo do form
 	}
 
 	public List<Autor> getAutores() {
-		return this.dao.todosAutores();
+		// return this.dao.todosAutores();
+		return this.service.todosAutores();
 	}
 }

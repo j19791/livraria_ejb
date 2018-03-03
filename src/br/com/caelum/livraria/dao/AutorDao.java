@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -17,6 +21,10 @@ import br.com.caelum.livraria.modelo.Autor;
 // mesmo tempo para melhor o desempenho.
 // standalone.xml configura a qtd de threads (pool de objetos) q podem limitar o
 // uso da aplicação
+@TransactionManagement(TransactionManagementType.CONTAINER) // O JTA é a forma padrão de gerenciar a transação dentro do
+															// servidor JavaEE e funciona sem nenhuma configuração (a
+															// config CONTAINER É OPCIONAL):
+															// CONTAINER MANAGED TRANSACTION (CMT).
 public class AutorDao {
 
 	// private Banco banco = new Banco();
@@ -33,6 +41,10 @@ public class AutorDao {
 		System.out.println("AutorDao foi criado");
 	}
 
+	// @TransactionAttribute(TransactionAttributeType.REQUIRED) // opcional - O jta
+	// JÁ CONFIGURA ESSA opção como padrão
+	@TransactionAttribute(TransactionAttributeType.MANDATORY) // o dao nao pode ter controle de transacao - o controle
+																// deverá vir de outros ejb (autorservice)
 	public void salva(Autor autor) {
 
 		System.out.println("antes de salvar autor:" + autor.getNome());
