@@ -13,12 +13,12 @@ import br.com.caelum.livraria.modelo.Usuario;
 
 //@Stateless // controlada pelo EJB Container
 @Singleton // não faz sentido nenhum ter mais do que um objeto instanciado (threads) dessa
-			// classe.
+			// classe. @Singleton garante que haverá somente uma instância do Session Bean.
 // É preciso ter apenas um único objeto para simular o banco.
 // tipicamente usados para inicializar alguma configuração ou agendar algum
 // serviço
 @Startup // eager initialization: queremos usar o Singleton Bean desde o início da
-			// aplicação - no startup do servidor:
+			// aplicação - no startup do servidor. Padrão lazy (sob-demanda)
 public class Banco {
 
 	public static List<Livro> livros = new ArrayList<Livro>();

@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.caelum.livraria.modelo.Autor;
 
@@ -19,8 +20,12 @@ import br.com.caelum.livraria.modelo.Autor;
 public class AutorDao {
 
 	// private Banco banco = new Banco();
-	@Inject // Banco é ejb stateless
-	private Banco banco;
+	// @Inject // Banco é ejb stateless
+	// private Banco banco;
+
+	@PersistenceContext // EJB Container administrará o JPA - o EJB Container injete o EntityManager -
+						// serve para gerenciar os dados armazenados pelos sistemas.
+	EntityManager manager;
 
 	@PostConstruct // Callback: Este método não será chamado pela AutorBean. @PostConstruct será
 					// chamado pelo próprio EJB Container. apenas um Session Bean é criada por aba
@@ -32,24 +37,29 @@ public class AutorDao {
 
 		System.out.println("antes de salvar autor:" + autor.getNome());
 
-		try {
-			Thread.sleep(20000);// travar a execução da thread atual por 20s
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		/*
+		 * try { Thread.sleep(20000);// travar a execução da thread atual por 20s }
+		 * catch (InterruptedException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
 
-		banco.save(autor);
+		// banco.save(autor);
+
+		manager.persist(autor); // substitudo p/ usar o jpa
 
 		System.out.println("depois de salvar autor: " + autor.getNome());
 	}
 
 	public List<Autor> todosAutores() {
-		return banco.listaAutores();
+		// return banco.listaAutores();
+		return manager.createQuery("select a from Autor a", Autor.class).getResultList();
 	}
 
 	public Autor buscaPelaId(Integer autorId) {
-		Autor autor = this.banco.buscaPelaId(autorId);
+		// Autor autor = this.banco.buscaPelaId(autorId);
+
+		Autor autor = this.manager.find(Autor.class, autorId);
+
 		return autor;
 	}
 
