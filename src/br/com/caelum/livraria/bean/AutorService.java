@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import br.com.caelum.livraria.dao.AutorDao;
+import br.com.caelum.livraria.dao.LivrariaException;
 import br.com.caelum.livraria.modelo.Autor;
 
 @Stateless
@@ -18,8 +19,14 @@ public class AutorService { // controller/dominio: classe intermediaria entre be
 	@Inject
 	AutorDao dao;
 
-	public void adiciona(Autor autor) {
+	public void adiciona(Autor autor) {// retirado throws LivrariaException - extends RuntimeException fica unchecked
 		this.dao.salva(autor);
+
+		throw new LivrariaException();
+		// Ao lançar a exceção LivrariaException é preciso deixar o tratamento
+		// explícito. Essa exceção é do tipo checked, ou seja, é necessário o uso do
+		// try-catch ou throws. Não tem rollback. Application Exception. Que é uma erro
+		// que pode acontecer durante a vida da aplicação e é relacionado ao domínio.
 	}
 
 	public List<Autor> todosAutores() {

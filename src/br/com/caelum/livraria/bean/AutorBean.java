@@ -32,7 +32,7 @@ public class AutorBean {
 		return autor;
 	}
 
-	public void cadastra() {
+	public void cadastra() { // throws LivrariaException
 		// this.dao.salva(autor);
 		this.service.adiciona(autor);
 		this.autor = new Autor();// p/ limpeza do campo do form

@@ -60,6 +60,12 @@ public class AutorDao {
 		manager.persist(autor); // substitudo p/ usar o jpa
 
 		System.out.println("depois de salvar autor: " + autor.getNome());
+
+		// throw new RuntimeException("Serviço externo deu erro!");
+		// exceção foi "embrulhada" em uma outra do tipo
+		// EJBTransactionRollbackException: foi feito um rollback da transação.
+		// unchecked., System Exception, algo grave e imprevisto.
+
 	}
 
 	public List<Autor> todosAutores() {
