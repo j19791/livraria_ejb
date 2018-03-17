@@ -25,6 +25,10 @@ import br.com.caelum.livraria.modelo.Autor;
 															// servidor JavaEE e funciona sem nenhuma configuração (a
 															// config CONTAINER É OPCIONAL):
 															// CONTAINER MANAGED TRANSACTION (CMT).
+
+// @Interceptors({ LogInterceptador.class }) // o EJB Container deve saber que
+// queremos interceptar as chamadas da classe
+// comentado o interceptor para utilizar a configuração do xml ejb-jar.xml
 public class AutorDao {
 
 	// private Banco banco = new Banco();
